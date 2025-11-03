@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পণ্যের বিবরণ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ/cn6/f/k0z6B+k6zTqN8mI2Lp2D2lA0k1m/A0A0A0A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .transition-all-200 { transition: all 200ms ease-in-out; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background-color: #f1f1f1; }
+        /* Active link style */
+        .active-sidebar-link {
+            background-color: #4338ca !important; /* Indigo 700 */
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-gray-800 text-white w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full transition duration-300 ease-in-out z-30 shadow-2xl custom-scrollbar overflow-y-auto md:w-64" style="width: 16rem;">
+        <a href="admin_dashboard.html" class="text-white flex items-center px-4 space-x-2">
+            <i class="fa-solid fa-store fa-2x text-indigo-400"></i>
+            <span class="text-2xl font-extrabold tracking-wider">হোলসেল Hub</span>
+        </a>
+
+        <!-- Navigation -->
+        <nav>
+            <a href="admin_dashboard.html" class="flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-all-200 hover:bg-indigo-600">
+                <i class="fas fa-home"></i>
+                <span class="font-medium">ড্যাশবোর্ড</span>
+            </a>
+            
+            <!-- Dropdown Menu: পণ্য ব্যবস্থাপনা (Active) -->
+            <div class="relative">
+                <!-- Use a class to keep the button highlighted if any submenu item is active -->
+                <button id="product-menu-btn" class="flex items-center justify-between w-full space-x-3 px-4 py-2.5 mt-2 rounded-lg active-sidebar-link focus:outline-none bg-gray-700">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-box-open"></i>
+                        <span class="font-medium">পণ্য ব্যবস্থাপনা</span>
+                    </div>
+                    <i id="product-chevron" class="fas fa-chevron-down text-xs transition-transform duration-200 rotate-180"></i>
+                </button>
+                <!-- Dropdown Sub-menu (Open by default for this page) -->
+                <div id="product-submenu" class="ml-4 pl-3 mt-1 space-y-1 border-l border-indigo-400">
+                    <a href="product_list.html" class="block px-4 py-2 text-sm rounded-lg active-sidebar-link bg-indigo-700 text-white hover:bg-indigo-700 transition-all-200">
+                        সকল পণ্য (বিবরণ)
+                    </a>
+                    <a href="product_add.html" class="block px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-gray-700 transition-all-200">নতুন পণ্য যোগ</a>
+                    <a href="#" class="block px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-gray-700 transition-all-200">স্টক সতর্কতা</a>
+                </div>
+            </div>
+            
+            <a href="order_list.html" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-clipboard-list"></i>
+                <span class="font-medium">অর্ডারস</span>
+            </a>
+            <a href="customer_list.html" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-users"></i>
+                <span class="font-medium">ডিলার/রিটেইলার</span>
+            </a>
+            <a href="#" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-money-check-alt"></i>
+                <span class="font-medium">ক্যাশ রিকনসিলিয়েশন</span>
+            </a>
+            <a href="#" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-chart-line"></i>
+                <span class="font-medium">রিপোর্টস</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Content Area -->
+    <div id="main-content" class="flex-1 flex flex-col overflow-x-hidden transition-all duration-300 ease-in-out md:ml-64">
+        <!-- Header/Top Nav -->
+        <header class="flex items-center justify-between bg-white shadow-md p-4 sticky top-0 z-20">
+            <div class="flex items-center">
+                <button id="menu-btn" class="text-gray-600 mr-4 p-2 rounded-lg hover:bg-gray-100 transition-all-200">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+                <h1 class="text-2xl font-semibold text-gray-800">পণ্যের বিবরণ</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Action Buttons -->
+                <button class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-all-200 flex items-center shadow-md">
+                    <i class="fas fa-edit mr-2"></i> তথ্য সম্পাদনা
+                </button>
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <div id="profile-btn" class="flex items-center space-x-2 cursor-pointer p-1 rounded-lg hover:bg-gray-100 transition-all-200">
+                        <img class="h-8 w-8 rounded-full object-cover" src="https://placehold.co/150x150/4f46e5/ffffff?text=AD" alt="Admin Avatar">
+                        <span class="text-sm font-medium text-gray-700 hidden sm:block">এডমিন</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-1 z-50 hidden transition-all-200 border border-gray-100">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all-200">
+                            <i class="fas fa-user-circle mr-2 w-4"></i> আমার প্রোফাইল
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all-200">
+                            <i class="fas fa-key mr-2 w-4"></i> পাসওয়ার্ড পরিবর্তন
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all-200">
+                            <i class="fas fa-sign-out-alt mr-2 w-4"></i> লগআউট
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Section: Product Details Body -->
+        <main class="p-4 md:p-8 flex-1">
+            <div class="max-w-6xl mx-auto">
+                
+                <!-- Product Overview and Status -->
+                <div class="bg-white p-6 rounded-xl shadow-lg mb-6 flex flex-col md:flex-row justify-between items-start md:items-center border border-gray-200">
+                    <div class="flex items-center space-x-4">
+                        <img class="h-20 w-20 rounded-lg object-cover border border-gray-200" src="https://placehold.co/80x80/22c55e/ffffff?text=SALT" onerror="this.onerror=null;this.src='https://placehold.co/80x80/4f46e5/ffffff?text=PROD';" alt="Product Image">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-gray-900">ACI Salt (1 KG Packet) - এসিআই লবণ (১ কেজি)</h1>
+                            <p class="text-sm text-gray-500">পণ্যের আইডি: <span class="font-medium text-gray-700">PROD-4001</span> | SKU: <span class="font-medium text-gray-700">ACI-SALT-1KG</span></p>
+                            <p class="text-xs font-semibold mt-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full inline-block">স্টক আছে</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Details Grid (Info, Pricing, Inventory) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Basic Info Card -->
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg h-full border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
+                            <i class="fas fa-tags mr-2 text-indigo-500"></i> ক্যাটাগরি ও ব্র্যান্ড
+                        </h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">ক্যাটাগরি:</span>
+                                <span class="font-medium text-gray-800">মুদি ও খাদ্যপণ্য</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">সাব-ক্যাটাগরি:</span>
+                                <span class="font-medium text-gray-800">লবণ ও চিনি</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">ব্র্যান্ড:</span>
+                                <span class="font-medium text-gray-800">ACI</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">ইউনিট পরিমাপ:</span>
+                                <span class="font-medium text-gray-800">প্যাকেট (১ কেজি)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inventory/Stock Card -->
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg h-full border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
+                            <i class="fas fa-warehouse mr-2 text-indigo-500"></i> ইনভেন্টরি ও স্টক
+                        </h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">বর্তমান স্টক (ইউনিট):</span>
+                                <span class="text-2xl font-bold text-green-600">১২,০০০</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">সতর্কতা স্তর (Warning Level):</span>
+                                <span class="font-medium text-red-500">৫০০ ইউনিট</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">গুদাম/শেফ অবস্থান:</span>
+                                <span class="font-medium text-gray-800">WH-A, Rack-03</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">সর্বশেষ আপডেট:</span>
+                                <span class="font-medium text-gray-800">২০২৫-০৬-০১</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pricing Card -->
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg h-full border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
+                            <i class="fas fa-dollar-sign mr-2 text-indigo-500"></i> মূল্য নির্ধারণ
+                        </h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">ক্রয় মূল্য (Cost Price):</span>
+                                <span class="text-base font-semibold text-gray-900">৳৭২.০০</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">পাইকারি মূল্য (Wholesale Price):</span>
+                                <span class="text-xl font-bold text-indigo-600">৳৮০.০০</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="text-gray-500">খুচরা মূল্য (MRP):</span>
+                                <span class="font-semibold text-gray-900">৳৮৫.০০</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">লাভের মার্জিন (Wholesale Margin):</span>
+                                <span class="font-medium text-green-600">৳৮.০০ (১১.১১%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Description & Activity History -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                    <!-- Product Description -->
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
+                            <i class="fas fa-file-alt mr-2 text-indigo-500"></i> বিস্তারিত বিবরণ
+                        </h2>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            এসিআই পিওর সল্ট হলো একটি উচ্চ-মানের আয়োডিনযুক্ত লবণ, যা সরাসরি সমুদ্র থেকে সংগ্রহ করা হয় এবং সর্বাধুনিক প্রযুক্তি ব্যবহার করে পরিশোধিত করা হয়। এই লবণ সম্পূর্ণ বিশুদ্ধ এবং এতে কোনো ক্ষতিকারক উপাদান নেই। এটি রান্নার স্বাদ বাড়াতে এবং দৈনন্দিন আয়োডিনের চাহিদা পূরণে অপরিহার্য। এটি ১ কেজি প্যাকেটে ডিলারদের জন্য সরবরাহ করা হয়।
+                        </p>
+                    </div>
+
+                    <!-- Stock Activity History -->
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
+                            <i class="fas fa-chart-area mr-2 text-indigo-500"></i> স্টক কার্যকলাপের ইতিহাস
+                        </h2>
+                        <div class="overflow-x-auto max-h-80 custom-scrollbar">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50 sticky top-0">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">তারিখ</th>
+                                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ধরণ</th>
+                                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">পরিমাণ</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">রেফারেন্স</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-800">২০২৫-০৬-০১</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center text-green-600 font-medium">ইন (Receipt)</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center font-bold text-green-700">+৫,০০০</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">Purchase Order #1021</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-800">২০২৫-০৫-২৫</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center text-red-600 font-medium">আউট (Sale)</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center font-bold text-red-700">-১০০</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">Order #5678 (হাবিব স্টোর)</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-800">২০২৫-০৫-২০</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center text-red-600 font-medium">আউট (Sale)</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center font-bold text-red-700">-৫০০</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">Order #5677 (মালিক ব্রাদার্স)</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-800">২০২৫-০৫-০১</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center text-green-600 font-medium">ইন (Receipt)</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center font-bold text-green-700">+৭,৫০০</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">Initial Stocking</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="p-4 bg-white shadow-inner mt-4 text-center text-sm text-gray-500">
+            &copy; ২০২৫ হোলসেল Hub। সর্বস্বত্ত্ব সংরক্ষিত।
+        </footer>
+    </div>
+
+    <!-- JavaScript for Sidebar Toggle and Dropdown Logic -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const productMenuBtn = document.getElementById('product-menu-btn');
+        const productSubmenu = document.getElementById('product-submenu');
+        const productChevron = document.getElementById('product-chevron');
+
+        let isSidebarOpen = window.innerWidth >= 768;
+
+        // Function to handle the state of the product submenu on load
+        function initializeProductMenu() {
+            // Since this is a product details page, keep the dropdown visible and the chevron rotated
+            productSubmenu.classList.remove('hidden');
+            productChevron.classList.add('rotate-180');
+        }
+
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+            
+            if (window.innerWidth < 768) {
+                sidebar.classList.toggle('-translate-x-full', !isSidebarOpen);
+                if (isSidebarOpen) {
+                    mainContent.classList.add('fixed', 'inset-0', 'bg-gray-900', 'bg-opacity-50', 'z-20');
+                } else {
+                    mainContent.classList.remove('fixed', 'inset-0', 'bg-gray-900', 'bg-opacity-50', 'z-20');
+                }
+            } else {
+                if (isSidebarOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    mainContent.classList.add('md:ml-64');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    mainContent.classList.remove('md:ml-64');
+                }
+            }
+        }
+        
+        window.addEventListener('load', () => {
+             initializeProductMenu(); // Initialize the product menu state
+             if (window.innerWidth >= 768) {
+                sidebar.classList.remove('-translate-x-full');
+                isSidebarOpen = true;
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                isSidebarOpen = false;
+            }
+        });
+
+
+        menuBtn.addEventListener('click', toggleSidebar);
+        
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('hidden');
+        });
+        
+        // This is still needed for collapsing/expanding the menu
+        productMenuBtn.addEventListener('click', () => {
+            productSubmenu.classList.toggle('hidden');
+            productChevron.classList.toggle('rotate-180');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+             if (window.innerWidth < 768 && isSidebarOpen) {
+                 if (!sidebar.contains(e.target) && e.target !== menuBtn) {
+                     if (mainContent.classList.contains('bg-opacity-50')) {
+                        toggleSidebar();
+                     }
+                 }
+            }
+        });
+
+        window.addEventListener('resize', () => {
+             if (window.innerWidth >= 768) {
+                mainContent.classList.remove('fixed', 'inset-0', 'bg-gray-900', 'bg-opacity-50', 'z-20');
+                if (isSidebarOpen) {
+                    mainContent.classList.add('md:ml-64');
+                    sidebar.classList.remove('-translate-x-full');
+                } else {
+                    mainContent.classList.remove('md:ml-64');
+                    sidebar.classList.add('-translate-x-full');
+                }
+            } else {
+                mainContent.classList.remove('md:ml-64');
+            }
+        });
+    </script>
+</body>
+</html>

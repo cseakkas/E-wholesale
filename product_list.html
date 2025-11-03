@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সকল পণ্য তালিকা</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ/cn6/f/k0z6B+k6zTqN8mI2Lp2D2lA0k1m/A0A0A0A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .transition-all-200 { transition: all 200ms ease-in-out; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background-color: #f1f1f1; }
+        /* Active link style */
+        .active-sidebar-link {
+            background-color: #4338ca !important; /* Indigo 700 */
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-gray-800 text-white w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full transition duration-300 ease-in-out z-30 shadow-2xl custom-scrollbar overflow-y-auto md:w-64" style="width: 16rem;">
+        <a href="admin_dashboard.html" class="text-white flex items-center px-4 space-x-2">
+            <i class="fa-solid fa-store fa-2x text-indigo-400"></i>
+            <span class="text-2xl font-extrabold tracking-wider">হোলসেল Hub</span>
+        </a>
+
+        <!-- Navigation -->
+        <nav>
+            <a href="admin_dashboard.html" class="flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-all-200 hover:bg-indigo-600">
+                <i class="fas fa-home"></i>
+                <span class="font-medium">ড্যাশবোর্ড</span>
+            </a>
+            
+            <!-- Dropdown Menu: পণ্য ব্যবস্থাপনা (Active) -->
+            <div class="relative">
+                <button id="product-menu-btn" class="flex items-center justify-between w-full space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 bg-gray-700 focus:outline-none">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-box-open"></i>
+                        <span class="font-medium">পণ্য ব্যবস্থাপনা</span>
+                    </div>
+                    <i id="product-chevron" class="fas fa-chevron-down text-xs transition-transform duration-200 rotate-180"></i>
+                </button>
+                <!-- Dropdown Sub-menu (Open) -->
+                <div id="product-submenu" class="ml-4 pl-3 mt-1 space-y-1 border-l border-gray-700">
+                    <a href="product_list.html" class="block px-4 py-2 text-sm rounded-lg text-white active-sidebar-link transition-all-200">সকল পণ্য</a>
+                    <a href="product_add.html" class="block px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-gray-700 transition-all-200">নতুন পণ্য যোগ</a>
+                    <a href="#" class="block px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-gray-700 transition-all-200">স্টক সতর্কতা</a>
+                </div>
+            </div>
+            
+            <a href="order_list.html" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-clipboard-list"></i>
+                <span class="font-medium">অর্ডারস</span>
+            </a>
+            <a href="customer_list.html" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-users"></i>
+                <span class="font-medium">ডিলার/রিটেইলার</span>
+            </a>
+            <a href="#" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-money-check-alt"></i>
+                <span class="font-medium">ক্যাশ রিকনসিলিয়েশন</span>
+            </a>
+            <a href="#" class="flex items-center space-x-3 px-4 py-2.5 mt-2 rounded-lg transition-all-200 hover:bg-gray-700">
+                <i class="fas fa-chart-line"></i>
+                <span class="font-medium">রিপোর্টস</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Content Area -->
+    <div id="main-content" class="flex-1 flex flex-col overflow-x-hidden transition-all duration-300 ease-in-out md:ml-64">
+        <!-- Header/Top Nav -->
+        <header class="flex items-center justify-between bg-white shadow-md p-4 sticky top-0 z-20">
+            <div class="flex items-center">
+                <button id="menu-btn" class="text-gray-600 mr-4 p-2 rounded-lg hover:bg-gray-100 transition-all-200">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+                <h1 class="text-2xl font-semibold text-gray-800">সকল পণ্য তালিকা</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-all-200 relative">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+                </button>
+                
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <div id="profile-btn" class="flex items-center space-x-2 cursor-pointer p-1 rounded-lg hover:bg-gray-100 transition-all-200">
+                        <img class="h-8 w-8 rounded-full object-cover" src="https://placehold.co/150x150/4f46e5/ffffff?text=AD" alt="Admin Avatar">
+                        <span class="text-sm font-medium text-gray-700 hidden sm:block">এডমিন</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-1 z-50 hidden transition-all-200 border border-gray-100">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all-200">
+                            <i class="fas fa-user-circle mr-2 w-4"></i> আমার প্রোফাইল
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all-200">
+                            <i class="fas fa-key mr-2 w-4"></i> পাসওয়ার্ড পরিবর্তন
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all-200">
+                            <i class="fas fa-sign-out-alt mr-2 w-4"></i> লগআউট
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content: Product List Table -->
+        <main class="p-4 sm:p-6 flex-1 custom-scrollbar overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex space-x-3">
+                    <input type="text" placeholder="পণ্য খুঁজুন..." class="p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all-200"><i class="fas fa-search mr-1"></i> সার্চ</button>
+                </div>
+                <a href="product_add.html" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-all-200">
+                    <i class="fas fa-plus mr-1"></i> নতুন যোগ করুন
+                </a>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg transition-all-200 overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">নাম</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ক্যাটাগরি</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">মূল্য (৳)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">স্টক</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">স্ট্যাটাস</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Product Item 1 -->
+                        <tr class="hover:bg-gray-50 transition-all-200">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">P001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">১৫W LED লাইট</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">লাইট ও বাল্ব</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">১৫০</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">১২০০</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">সক্রিয়</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="text-red-600 hover:text-red-900"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <!-- Product Item 2 -->
+                         <tr class="hover:bg-gray-50 transition-all-200">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">P002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">৪-ওয়ে এক্সটেনশন কর্ড</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">আনুষাঙ্গিক</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">২৫০</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600">৩০</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">স্টক কম</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="text-red-600 hover:text-red-900"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <!-- Product Item 3 -->
+                         <tr class="hover:bg-gray-50 transition-all-200">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">P003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">ডিজিটাল ভোল্টমিটার</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">সুইচ ও সকেট</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">৪০০</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">৯৫০</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">সক্রিয়</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="text-red-600 hover:text-red-900"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-6 flex justify-between items-center">
+                <p class="text-sm text-gray-600">মোট ১০২ টি পণ্য</p>
+                <!-- Simple Pagination -->
+                <div class="flex items-center space-x-2">
+                    <button class="px-3 py-1 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-all-200"><i class="fas fa-chevron-left"></i></button>
+                    <span class="px-3 py-1 text-sm bg-indigo-600 text-white rounded-lg">১</span>
+                    <button class="px-3 py-1 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-all-200">২</button>
+                    <button class="px-3 py-1 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-all-200">৩</button>
+                    <button class="px-3 py-1 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-all-200"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="p-4 bg-white shadow-inner mt-4 text-center text-sm text-gray-500">
+            &copy; ২০২৫ হোলসেল Hub। সর্বস্বত্ত্ব সংরক্ষিত।
+        </footer>
+    </div>
+
+    <!-- JavaScript for Sidebar Toggle and Dropdown Logic -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const productMenuBtn = document.getElementById('product-menu-btn');
+        const productSubmenu = document.getElementById('product-submenu');
+        const productChevron = document.getElementById('product-chevron');
+
+        let isSidebarOpen = window.innerWidth >= 768;
+
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+            
+            if (window.innerWidth < 768) {
+                sidebar.classList.toggle('-translate-x-full', !isSidebarOpen);
+                if (isSidebarOpen) {
+                    mainContent.classList.add('fixed', 'inset-0', 'bg-gray-900', 'bg-opacity-50', 'z-20');
+                } else {
+                    mainContent.classList.remove('fixed', 'inset-0', 'bg-gray-900', 'bg-opacity-50', 'z-20');
+                }
+            } else {
+                if (isSidebarOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    mainContent.classList.add('md:ml-64');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    mainContent.classList.remove('md:ml-64');
+                }
+            }
+        }
+        
+        window.addEventListener('load', () => {
+             if (window.innerWidth >= 768) {
+                sidebar.classList.remove('-translate-x-full');
+                isSidebarOpen = true;
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                isSidebarOpen = false;
+            }
+        });
+
+
+        menuBtn.addEventListener('click', toggleSidebar);
+        
+        profileBtn.addEventListener('click', () => {
+            profileDropdown.classList.toggle('hidden');
+        });
+        
+        productMenuBtn.addEventListener('click', () => {
+            productSubmenu.classList.toggle('hidden');
+            productChevron.classList.toggle('rotate-180');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+             if (window.innerWidth < 768 && isSidebarOpen) {
+                 if (!sidebar.contains(e.target) && e.target !== menuBtn) {
+                     if (mainContent.classList.contains('bg-opacity-50')) {
+                        toggleSidebar();
+                     }
+                 }
+            }
+        });
+
+        window.addEventListener('resize', () => {
+             if (window.innerWidth >= 768) {
+                mainContent.classList.remove('fixed', 'inset-0', 'bg-gray-900', 'bg-opacity-50', 'z-20');
+                if (isSidebarOpen) {
+                    mainContent.classList.add('md:ml-64');
+                    sidebar.classList.remove('-translate-x-full');
+                } else {
+                    mainContent.classList.remove('md:ml-64');
+                    sidebar.classList.add('-translate-x-full');
+                }
+            } else {
+                mainContent.classList.remove('md:ml-64');
+            }
+        });
+    </script>
+</body>
+</html>
